@@ -34,6 +34,7 @@ contract DiamondUnitTest is Test {
     address diamondAdmin = address(0x1337DAD);
     address alice = address(0xA11C3);
     address bob = address(0xB0B);
+    address hacker = address(0xBAD);
 
     address[] facetAddressList;
 
@@ -88,9 +89,10 @@ contract DiamondUnitTest is Test {
             functionSelectors: accessControlSelectors
         });
 
-        vm.startPrank(diamondAdmin);
+        vm.startPrank(diamondAdmin, diamondAdmin);
         console.log("Diamond Admin: ", address(diamondAdmin));
         console.log("Msg.sender: ", msg.sender);
+        assertEq(address(diamondAdmin), msg.sender, "msg.sender not diamondAdmin");
         diamond = new Diamond(msg.sender, initCut, initDiamondArgs);
         vm.stopPrank();
 
@@ -107,9 +109,6 @@ contract DiamondUnitTest is Test {
         assertNotEq(facetAddressList[0], address(0), "Not 0x0 address");
         assertNotEq(facetAddressList[1], address(0), "Not 0x0 address");
         assertNotEq(facetAddressList[2], address(0), "Not 0x0 address");
-
-        // Owner is set correctly?
-        // assertEq(IERC173(address(diamond)).owner(), diamondOwner, "Diamond owner set properly");
 
         // Interface support set to true during `init()` call during Diamond upgrade?
         assertTrue(

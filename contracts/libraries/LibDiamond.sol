@@ -26,6 +26,7 @@ library LibDiamond {
     bytes32 constant DIAMOND_STORAGE_POSITION = keccak256("diamond.standard.diamond.storage");
 
     // roles
+    bytes32 constant DEFAULT_ADMIN_ROLE = 0x0;
     bytes32 constant DIAMOND_ADMIN_ROLE = keccak256("DIAMOND_ADMIN_ROLE");
 
     struct RoleData {
