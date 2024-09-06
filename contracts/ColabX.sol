@@ -14,11 +14,12 @@ import {FacetCut} from "./interfaces/IDiamondCut.sol";
 // When no function exists for function called
 error Diamond_FunctionNotFound(bytes4 _functionSelector);
 
-contract Diamond {
+contract ColabX {
     constructor(address _diamondAdmin, FacetCut[] memory _diamondCut, DiamondArgs memory _args) payable {
-        // Grant `_contractAdmin` address the diamond admin role a.k.a default admin role
-        LibDiamond._grantRole(LibDiamond.DIAMOND_ADMIN_ROLE, _diamondAdmin);
-
+        // Grant `_diamondAdmin` address the default admin role
+        LibDiamond._grantRole(LibDiamond.DEFAULT_ADMIN_ROLE, _diamondAdmin);
+        
+        LibDiamond._grantRole(LibDiamond.DEFAULT_ADMIN_ROLE, _diamondAdmin);
         // Add the diamondCut external function from the diamondCutFacet
         LibDiamond.diamondCut(_diamondCut, _args.init, _args.initCalldata);
     }

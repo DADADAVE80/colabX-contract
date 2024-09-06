@@ -12,7 +12,7 @@ import {DiamondLoupeFacet} from "contracts/facets/DiamondLoupeFacet.sol";
 import {AccessControlFacet} from "contracts/facets/AccessControlFacet.sol";
 
 import {IDiamondCut, FacetCut, FacetCutAction} from "contracts/interfaces/IDiamondCut.sol";
-import {IDiamondInit} from "../../contracts/interfaces/IDiamondInit.sol";
+import {IDiamondInit} from "../../../contracts/interfaces/IDiamondInit.sol";
 import {IDiamondLoupe} from "contracts/interfaces/IDiamondLoupe.sol";
 import {IAccessControl} from "contracts/interfaces/IAccessControl.sol";
 import {IERC165} from "contracts/interfaces/IERC165.sol";
@@ -21,17 +21,19 @@ import {LibDiamond, DiamondArgs} from "contracts/libraries/LibDiamond.sol";
 
 // import {LibApp} from "contracts/libraries/LibApp.sol";
 contract DiamondUnitTest is Test {
-    ColabX diamond;
-    DiamondInit diamondInit;
+    ColabX public diamond;
+    DiamondInit public diamondInit;
 
-    DiamondCutFacet diamondCutFacet;
-    DiamondLoupeFacet diamondLoupeFacet;
-    AccessControlFacet accessControlFacet;
+    DiamondCutFacet public diamondCutFacet;
+    DiamondLoupeFacet public diamondLoupeFacet;
+    AccessControlFacet public accessControlFacet;
+
+    uint256 public kintoFork;
 
     IDiamondLoupe ILoupe;
     IDiamondCut ICut;
 
-    address diamondAdmin = address(0x1337DAD);
+    address diamondAdmin = address(0x7D413F244A0e9A0b9C8D7F9AFA1177eE3a2837fa);
     address alice = address(0xA11C3);
     address bob = address(0xB0B);
     address hacker = address(0xBAD);
@@ -39,6 +41,12 @@ contract DiamondUnitTest is Test {
     address[] facetAddressList;
 
     function setUp() public {
+        string memory KINTO_RPC_URL = vm.envString(
+            "KINTO_RPC_URL"
+        );
+        kintoFork = vm.createSelectFork(KINTO_RPC_URL);
+        assertEq(vm.activeFork(), kintoFork); // sanity check
+
         // Deploy core diamond template contracts
         diamondInit = new DiamondInit();
         diamondCutFacet = new DiamondCutFacet();
@@ -89,18 +97,24 @@ contract DiamondUnitTest is Test {
             functionSelectors: accessControlSelectors
         });
 
-        vm.startPrank(diamondAdmin, diamondAdmin);
+        // vm.startPrank(diamondAdmin);
         console.log("Diamond Admin: ", address(diamondAdmin));
+        vm.prank(diamondAdmin);
         console.log("Msg.sender: ", msg.sender);
+        
         // assertEq(address(diamondAdmin), msg.sender, "msg.sender not diamondAdmin");
         diamond = new ColabX(msg.sender, initCut, initDiamondArgs);
-        vm.stopPrank();
+        // vm.stopPrank();
 
         facetAddressList = IDiamondLoupe(address(diamond)).facetAddresses(); // save all facet addresses
 
         // Set interfaces for less verbose diamond interactions.
         ILoupe = IDiamondLoupe(address(diamond));
         ICut = IDiamondCut(address(diamond));
+    }
+
+    function test_viewLoupe() public view {
+        ILoupe.facets();
     }
 
     function test_Deployment() public view {

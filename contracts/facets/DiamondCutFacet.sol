@@ -24,7 +24,7 @@ contract DiamondCutFacet is IDiamondCut {
         address _init,
         bytes calldata _calldata
     ) external override {
-        LibDiamond._checkRole(LibDiamond.DIAMOND_ADMIN_ROLE);
+        LibDiamond._checkRole(LibDiamond.DEFAULT_ADMIN_ROLE);
         LibDiamond.diamondCut(_diamondCut, _init, _calldata);
     }
 }

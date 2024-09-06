@@ -26,7 +26,7 @@ library LibDiamond {
     bytes32 constant DIAMOND_STORAGE_POSITION = keccak256("diamond.standard.diamond.storage");
 
     // roles
-    bytes32 constant DEFAULT_ADMIN_ROLE = 0x0;
+    bytes32 constant DEFAULT_ADMIN_ROLE = 0x00;
     bytes32 constant DIAMOND_ADMIN_ROLE = keccak256("DIAMOND_ADMIN_ROLE");
 
     struct RoleData {
@@ -81,31 +81,6 @@ library LibDiamond {
         _checkRole(role);
         _;
     }
-
-    /**
-     * @dev Emitted when `newAdminRole` is set as ``role``'s admin role, replacing `previousAdminRole`
-     *
-     * `DEFAULT_ADMIN_ROLE` is the starting admin for all roles, despite
-     * {RoleAdminChanged} not being emitted signaling this.
-     */
-    event RoleAdminChanged(bytes32 indexed role, bytes32 indexed previousAdminRole, bytes32 indexed newAdminRole);
-
-    /**
-     * @dev Emitted when `account` is granted `role`.
-     *
-     * `sender` is the account that originated the contract call. This account bears the admin role (for the granted role).
-     * Expected in cases where the role was granted using the internal {AccessControl-_grantRole}.
-     */
-    event RoleGranted(bytes32 indexed role, address indexed account, address indexed sender);
-
-    /**
-     * @dev Emitted when `account` is revoked `role`.
-     *
-     * `sender` is the account that originated the contract call:
-     *   - if using `revokeRole`, it is the admin role bearer
-     *   - if using `renounceRole`, it is the role bearer (i.e. `account`)
-     */
-    event RoleRevoked(bytes32 indexed role, address indexed account, address indexed sender);
 
     /**
      * @dev Returns `true` if `account` has been granted `role`.
@@ -211,7 +186,7 @@ library LibDiamond {
 
         bytes32 previousAdminRole = getRoleAdmin(role);
         ds._roles[role].adminRole = adminRole;
-        emit RoleAdminChanged(role, previousAdminRole, adminRole);
+        emit IAccessControl.RoleAdminChanged(role, previousAdminRole, adminRole);
     }
 
     /**
@@ -226,7 +201,7 @@ library LibDiamond {
 
         if (!hasRole(role, account)) {
             ds._roles[role].hasRole[account] = true;
-            emit RoleGranted(role, account, msg.sender);
+            emit IAccessControl.RoleGranted(role, account, msg.sender);
             return true;
         } else {
             return false;
@@ -245,7 +220,7 @@ library LibDiamond {
 
         if (hasRole(role, account)) {
             ds._roles[role].hasRole[account] = false;
-            emit RoleRevoked(role, account, msg.sender);
+            emit IAccessControl.RoleRevoked(role, account, msg.sender);
             return true;
         } else {
             return false;
