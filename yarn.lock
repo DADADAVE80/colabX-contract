@@ -697,6 +697,11 @@
     "@nomicfoundation/solidity-analyzer-linux-x64-musl" "0.1.2"
     "@nomicfoundation/solidity-analyzer-win32-x64-msvc" "0.1.2"
 
+"@openzeppelin/contracts@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.npmjs.org/@openzeppelin/contracts/-/contracts-5.0.2.tgz"
+  integrity sha512-ytPc6eLGcHHnapAZ9S+5qsdomhjo6QBHTDRRBFfTxXIpsicMhVPouPgmUPebZZZGX7vt9USA+Z+0M0dSVtSUEA==
+
 "@scure/base@~1.1.0", "@scure/base@~1.1.6":
   version "1.1.7"
   resolved "https://registry.npmjs.org/@scure/base/-/base-1.1.7.tgz"
@@ -1565,7 +1570,7 @@ death@^1.1.0:
   resolved "https://registry.npmjs.org/death/-/death-1.1.0.tgz"
   integrity sha512-vsV6S4KVHvTGxbEcij7hkWRv0It+sGGWVOM67dQde/o5Xjnr+KmLjxWJii2uEObIrt1CcM9w0Yaovx+iOlIL+w==
 
-debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.5, debug@4:
+debug@^4.1.1, debug@^4.3.1, debug@^4.3.2, debug@^4.3.3, debug@^4.3.5, debug@4:
   version "4.3.6"
   resolved "https://registry.npmjs.org/debug/-/debug-4.3.6.tgz"
   integrity sha512-O/09Bd4Z1fBrU4VzkhFqVgpPzaGbw6Sm9FEkBT1A/YBXQFGuuSxa1dN2nxgxS34JmKXqYx8CZAwEVoJFImUXIg==
@@ -1848,6 +1853,42 @@ ethereumjs-util@^7.1.4:
     create-hash "^1.1.2"
     ethereum-cryptography "^0.1.3"
     rlp "^2.2.4"
+
+ethers@^5.5.2:
+  version "5.7.2"
+  resolved "https://registry.npmjs.org/ethers/-/ethers-5.7.2.tgz"
+  integrity sha512-wswUsmWo1aOK8rR7DIKiWSw9DbLWe6x98Jrn8wcTflTVvaXhAMaB5zGAXy0GYQEQp9iO1iSHWVyARQm11zUtyg==
+  dependencies:
+    "@ethersproject/abi" "5.7.0"
+    "@ethersproject/abstract-provider" "5.7.0"
+    "@ethersproject/abstract-signer" "5.7.0"
+    "@ethersproject/address" "5.7.0"
+    "@ethersproject/base64" "5.7.0"
+    "@ethersproject/basex" "5.7.0"
+    "@ethersproject/bignumber" "5.7.0"
+    "@ethersproject/bytes" "5.7.0"
+    "@ethersproject/constants" "5.7.0"
+    "@ethersproject/contracts" "5.7.0"
+    "@ethersproject/hash" "5.7.0"
+    "@ethersproject/hdnode" "5.7.0"
+    "@ethersproject/json-wallets" "5.7.0"
+    "@ethersproject/keccak256" "5.7.0"
+    "@ethersproject/logger" "5.7.0"
+    "@ethersproject/networks" "5.7.1"
+    "@ethersproject/pbkdf2" "5.7.0"
+    "@ethersproject/properties" "5.7.0"
+    "@ethersproject/providers" "5.7.2"
+    "@ethersproject/random" "5.7.0"
+    "@ethersproject/rlp" "5.7.0"
+    "@ethersproject/sha2" "5.7.0"
+    "@ethersproject/signing-key" "5.7.0"
+    "@ethersproject/solidity" "5.7.0"
+    "@ethersproject/strings" "5.7.0"
+    "@ethersproject/transactions" "5.7.0"
+    "@ethersproject/units" "5.7.0"
+    "@ethersproject/wallet" "5.7.0"
+    "@ethersproject/web" "5.7.1"
+    "@ethersproject/wordlists" "5.7.0"
 
 ethers@^5.7.2:
   version "5.7.2"
@@ -2219,6 +2260,14 @@ handlebars@^4.0.1:
   optionalDependencies:
     uglify-js "^3.1.4"
 
+hardhat-diamond-abi@^3.0.1:
+  version "3.0.1"
+  resolved "https://registry.npmjs.org/hardhat-diamond-abi/-/hardhat-diamond-abi-3.0.1.tgz"
+  integrity sha512-t+skBGX8lK3qH/YQB8L/QJVIINyuji/2r4q9JcZQ0rX9oEZzgfJMka2ttZ4gyuNcYRT95KyfDSuCCwSQX1cVDA==
+  dependencies:
+    debug "^4.3.3"
+    ethers "^5.5.2"
+
 hardhat-gas-reporter@^1.0.8:
   version "1.0.10"
   resolved "https://registry.npmjs.org/hardhat-gas-reporter/-/hardhat-gas-reporter-1.0.10.tgz"
@@ -2228,7 +2277,7 @@ hardhat-gas-reporter@^1.0.8:
     eth-gas-reporter "^0.2.25"
     sha1 "^1.1.1"
 
-hardhat@^2.0.2, hardhat@^2.11.0, hardhat@^2.17.2, hardhat@^2.18.0, hardhat@^2.22.72.0.4, hardhat@^2.22.9, hardhat@^2.22.92.0.0, hardhat@^2.9.4, hardhat@^2.9.5, hardhat@^2.9.9:
+hardhat@^2.0.0, hardhat@^2.0.2, hardhat@^2.11.0, hardhat@^2.17.2, hardhat@^2.18.0, hardhat@^2.22.72.0.4, hardhat@^2.22.9, hardhat@^2.22.92.0.0, hardhat@^2.9.4, hardhat@^2.9.5, hardhat@^2.9.9:
   version "2.22.9"
   resolved "https://registry.npmjs.org/hardhat/-/hardhat-2.22.9.tgz"
   integrity sha512-sWiuI/yRdFUPfndIvL+2H18Vs2Gav0XacCFYY5msT5dHOWkhLxESJySIk9j83mXL31aXL8+UMA9OgViFLexklg==
@@ -3577,7 +3626,7 @@ ts-essentials@^7.0.1:
   resolved "https://registry.npmjs.org/ts-essentials/-/ts-essentials-7.0.3.tgz"
   integrity sha512-8+gr5+lqO3G84KdiTSMRLtuyJ+nTBVRKuCrK4lidMPdVeEp0uqC875uE5NMcaA7YYMN7XsNiFQuMvasF8HT/xQ==
 
-ts-node@*, ts-node@>=8.0.0:
+ts-node@*, ts-node@^10.9.2, ts-node@>=8.0.0:
   version "10.9.2"
   resolved "https://registry.npmjs.org/ts-node/-/ts-node-10.9.2.tgz"
   integrity sha512-f0FFpIdcHgn8zcPSbf1dRevwt047YMnaiJM3u2w2RewrB+fob/zePZcrOyQoLMMO7aBIddLcQIEK5dYjkLnGrQ==

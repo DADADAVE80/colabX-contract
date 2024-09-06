@@ -2,5 +2,22 @@
 src = 'contracts'
 out = 'out'
 libs = ['node_modules', 'lib']
-test = 'test'
+test = 'test/foundry'
+script = 'script/foundry'
 cache_path  = 'cache_forge'
+auto_detect_remappings = true
+auto_detect_solc = true
+optimizer = true
+optimizer_runs = 5000
+via_ir = true
+names = true
+block_gas_limit = 3_000_000_000
+bytecode_hash = "ipfs"
+sizes = false
+sender = '0x7D413F244A0e9A0b9C8D7F9AFA1177eE3a2837fa'
+
+[rpc_endpoints]
+kinto = "${KINTO_RPC_URL}"
+
+[etherscan]
+kinto = { key = "${ETHERSCAN_API_KEY}" }
