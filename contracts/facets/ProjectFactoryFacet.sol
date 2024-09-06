@@ -15,11 +15,11 @@ contract ProjectFactoryFacet {
 
         s.projects[++s.projectId] = newProject;
 
-        newProject.mint(msg.sender, s.projectId, newProject.decimals(), "");
-
         s.projectsArr.push(newProject);
 
         s.creatorProjects[msg.sender].push(newProject);
+
+        newProject.mint(msg.sender, s.projectId, newProject.decimals(), "");
 
         emit ProjectCreated(_title, s.projectId);
     }
