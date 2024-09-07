@@ -63,10 +63,11 @@ contract DeployColabX is Script {
         accessControlSelectors[4] = IAccessControl.renounceRole.selector;
         accessControlSelectors[5] = AccessControlFacet.setRoleAdmin.selector;
 
-        bytes4[] memory projectFactoryFacetSelectors = new bytes4[](3);
+        bytes4[] memory projectFactoryFacetSelectors = new bytes4[](4);
         projectFactoryFacetSelectors[0] = 0x6bd06204;
-        projectFactoryFacetSelectors[1] = 0xd6e403f3;
-        projectFactoryFacetSelectors[2] = 0x29e4b44f;
+        projectFactoryFacetSelectors[1] = 0x0c313778;
+        projectFactoryFacetSelectors[2] = 0xd6e403f3;
+        projectFactoryFacetSelectors[3] = 0x29e4b44f;
 
         initCut[0] = FacetCut({
             facetAddress: address(diamondCutFacet),
