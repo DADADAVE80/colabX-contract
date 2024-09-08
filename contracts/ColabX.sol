@@ -19,7 +19,7 @@ contract ColabX {
         // Grant `_diamondAdmin` address the default admin role
         LibDiamond._grantRole(LibDiamond.DEFAULT_ADMIN_ROLE, _diamondAdmin);
         
-        LibDiamond._grantRole(LibDiamond.DEFAULT_ADMIN_ROLE, _diamondAdmin);
+        LibDiamond._grantRole(LibDiamond.DIAMOND_ADMIN_ROLE, _diamondAdmin);
         // Add the diamondCut external function from the diamondCutFacet
         LibDiamond.diamondCut(_diamondCut, _args.init, _args.initCalldata);
     }

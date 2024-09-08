@@ -14,7 +14,7 @@ contract CollaborationFacet {
 
         Project newProject= new Project(msg.sender, project.uri(pageNo), project.name());
 
-        newProject.mint();
+        // newProject.mint();
     }
 
     function appStorage() internal pure returns (LibApp.AppStorage storage s) {

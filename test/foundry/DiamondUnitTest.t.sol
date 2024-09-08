@@ -10,6 +10,8 @@ import {DiamondInit} from "contracts/upgradeInitializers/DiamondInit.sol";
 import {DiamondCutFacet} from "contracts/facets/DiamondCutFacet.sol";
 import {DiamondLoupeFacet} from "contracts/facets/DiamondLoupeFacet.sol";
 import {AccessControlFacet} from "contracts/facets/AccessControlFacet.sol";
+import {AccessControlFacet} from "contracts/facets/AccessControlFacet.sol";
+import {ProjectFactoryFacet} from "contracts/facets/ProjectFactoryFacet.sol";
 
 import {IDiamondCut, FacetCut, FacetCutAction} from "contracts/interfaces/IDiamondCut.sol";
 import {IDiamondInit} from "../../contracts/interfaces/IDiamondInit.sol";
@@ -27,6 +29,7 @@ contract DiamondUnitTest is Test {
     DiamondCutFacet diamondCutFacet;
     DiamondLoupeFacet diamondLoupeFacet;
     AccessControlFacet accessControlFacet;
+    ProjectFactoryFacet projectFactoryFacet;
 
     IDiamondLoupe ILoupe;
     IDiamondCut ICut;
@@ -89,12 +92,13 @@ contract DiamondUnitTest is Test {
             functionSelectors: accessControlSelectors
         });
 
-        vm.startPrank(diamondAdmin, diamondAdmin);
         console.log("Diamond Admin: ", address(diamondAdmin));
         console.log("Msg.sender: ", msg.sender);
         // assertEq(address(diamondAdmin), msg.sender, "msg.sender not diamondAdmin");
         diamond = new ColabX(msg.sender, initCut, initDiamondArgs);
-        vm.stopPrank();
+
+        IAccessControl(address(diamond)).grantRole(LibDiamond.DEFAULT_ADMIN_ROLE, msg.sender);
+        IAccessControl(address(diamond)).grantRole(LibDiamond.DIAMOND_ADMIN_ROLE, msg.sender);
 
         facetAddressList = IDiamondLoupe(address(diamond)).facetAddresses(); // save all facet addresses
 
@@ -267,5 +271,29 @@ contract DiamondUnitTest is Test {
             ILoupe.facetAddress(AccessControlFacet.setRoleAdmin.selector),
             "should match"
         );
+    }
+
+    function test_addProjectFactoryFacet() public {
+        projectFactoryFacet = new ProjectFactoryFacet();
+
+        FacetCut[] memory projectFactoryCut = new FacetCut[](1);
+
+        bytes4[] memory projectFactoryFacetSelectors = new bytes4[](6);
+        projectFactoryFacetSelectors[0] = 0x6bd06204;
+        projectFactoryFacetSelectors[1] = 0x47c6c99c;
+        projectFactoryFacetSelectors[2] = 0xf751cd8f;
+        projectFactoryFacetSelectors[3] = 0x429a4365;
+        projectFactoryFacetSelectors[4] = 0xd6e403f3;
+        projectFactoryFacetSelectors[5] = 0x29e4b44f;
+
+        projectFactoryCut[0] = FacetCut({
+            facetAddress: address(projectFactoryFacet),
+            action: FacetCutAction.Add,
+            functionSelectors: projectFactoryFacetSelectors
+        });
+
+        IDiamondCut(address(diamond)).diamondCut(projectFactoryCut, address(0), "");
+
+        assertEq(facetAddressList.length, 4, "Cut, Loupe, AccessControl, ProjectFactory");
     }
 }

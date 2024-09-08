@@ -3,19 +3,15 @@
 pragma solidity ^0.8.20;
 
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Pausable.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
+import {Events} from "../contracts/libraries/constants/Events.sol";
 
-contract Project is ERC1155, AccessControl, ERC1155Pausable, ERC1155Supply {
-    bytes32 public constant URI_SETTER_ROLE = keccak256("URI_SETTER_ROLE");
-    bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
+contract Project is ERC1155, Ownable, ERC1155Pausable, ERC1155Supply {
     string public _name;
 
-    constructor(address defaultAdmin, string memory uri, string memory __name) ERC1155(uri) {
-        _grantRole(DEFAULT_ADMIN_ROLE, defaultAdmin);
-        _grantRole(PAUSER_ROLE, defaultAdmin);
-        _grantRole(URI_SETTER_ROLE, defaultAdmin);
+    constructor(address defaultAdmin, string memory uri, string memory __name) ERC1155(uri) Ownable(defaultAdmin) {
         _name = __name;
     }
 
@@ -43,31 +39,39 @@ contract Project is ERC1155, AccessControl, ERC1155Pausable, ERC1155Supply {
         return 18;
     }
 
-    function setURI(string memory newuri) public onlyRole(URI_SETTER_ROLE) {
-        _setURI(newuri);
+    function setURI(string memory newUri) public onlyOwner {
+        _setURI(newUri);
     }
 
-    function pause() public onlyRole(PAUSER_ROLE) {
+    function updateProjectName(string memory newName) public onlyOwner {
+        string memory oldName = _name;
+
+        _name = newName;
+
+        emit Events.ProjectTitleUpdated(oldName, newName);
+    }
+
+    function pause() public onlyOwner {
         _pause();
     }
 
-    function unpause() public onlyRole(PAUSER_ROLE) {
+    function unpause() public onlyOwner {
         _unpause();
     }
 
     function mint(address account, uint256 id, uint256 amount, bytes memory data)
         public
-        onlyRole(DEFAULT_ADMIN_ROLE)
+        onlyOwner
     {
         _mint(account, id, amount, data);
     }
 
-    // function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
-    //     public
-    //     onlyRole(MINTER_ROLE)
-    // {
-    //     _mintBatch(to, ids, amounts, data);
-    // }
+    function mintBatch(address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data)
+        public
+        onlyOwner
+    {
+        _mintBatch(to, ids, amounts, data);
+    }
 
     // The following functions are overrides required by Solidity.
     function _update(address from, address to, uint256[] memory ids, uint256[] memory values)
@@ -80,7 +84,7 @@ contract Project is ERC1155, AccessControl, ERC1155Pausable, ERC1155Supply {
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC1155, AccessControl)
+        override(ERC1155)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
